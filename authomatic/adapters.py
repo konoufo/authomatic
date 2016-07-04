@@ -53,7 +53,7 @@ you can subclass the :class:`.WebObAdapter` or :class:`.WerkzeugAdapter` respect
 
 import abc
 from authomatic.core import Response
-
+import importlib
 
 class BaseAdapter(object):
     """
@@ -131,7 +131,7 @@ class DjangoAdapter(BaseAdapter):
     """
     Adapter for the |django|_ framework.
     """
-    from django.http.request import QueryDict
+    QueryDict = importlib.import_module('django.http.request').QueryDict
 
     def __init__(self, request, response):
         """                
@@ -148,7 +148,7 @@ class DjangoAdapter(BaseAdapter):
     def params(self):
         # todo: Is Olivier Pons hack for request.REQUEST deprecation the best way ?
         # (!) Olivier Pons ! REQUEST removed
-        a = QueryDict('', mutable=True)
+        a = self.QueryDict('', mutable=True)
         a.update(self.request.GET)
         a.update(self.request.POST)
         retour = {}
