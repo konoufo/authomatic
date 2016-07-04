@@ -131,7 +131,8 @@ class DjangoAdapter(BaseAdapter):
     """
     Adapter for the |django|_ framework.
     """
-    
+    from django.http.request import QueryDict
+
     def __init__(self, request, response):
         """                
         :param request:
