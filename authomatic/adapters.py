@@ -145,7 +145,18 @@ class DjangoAdapter(BaseAdapter):
     
     @property
     def params(self):
-        return dict(self.request.REQUEST)
+        # todo: Is Olivier Pons hack for request.REQUEST deprecation the best way ?
+        # (!) Olivier Pons ! REQUEST removed
+        a = QueryDict('', mutable=True)
+        a.update(self.request.GET)
+        a.update(self.request.POST)
+        retour = {}
+        for key, value in a.iterlists():
+            if len(value) > 1:
+                retour[key] = value
+            else:
+                retour[key] = value[0]
+        return retour
     
     @property
     def url(self):
